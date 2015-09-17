@@ -28,6 +28,7 @@ namespace leatherman { namespace execution {
 
     const char *const command_shell = "cmd.exe";
     const char *const command_args = "/c";
+    static constexpr DWORD BUFFER_SIZE = 4096;
 
     struct extpath_helper
     {
@@ -123,8 +124,8 @@ namespace leatherman { namespace execution {
             PIPE_ACCESS_INBOUND | FILE_FLAG_OVERLAPPED,
             PIPE_TYPE_BYTE | PIPE_WAIT,
             1,
-            4096,
-            4096,
+            BUFFER_SIZE,
+            BUFFER_SIZE,
             0,
             &attributes));
 
@@ -203,31 +204,51 @@ namespace leatherman { namespace execution {
             name(move(pipe_name)),
             handle(move(pipe_handle)),
             overlapped{},
-            pending(false),
-            read(true),
-            callback(move(cb))
+            pending(false)
         {
-            init();
+            if (handle != INVALID_HANDLE_VALUE) {
+                event = scoped_handle(CreateEvent(nullptr, TRUE, FALSE, nullptr));
+                if (!event) {
+                    LOG_ERROR("failed to create %1% read event: %2%.", name, system_error());
+                    throw execution_exception("failed to create read event.");
+                }
+                overlapped.hEvent = event;
+            }
         }
 
-        pipe(string pipe_name, scoped_handle pipe_handle, string buf) :
-            name(move(pipe_name)),
-            handle(move(pipe_handle)),
-            overlapped{},
-            pending(false),
-            read(false),
-            buffer(move(buf))
-        {
-            init();
-        }
+        virtual BOOL process(DWORD &count);
+        virtual bool update(DWORD count);
 
         const string name;
         scoped_handle handle;
         OVERLAPPED overlapped;
         scoped_handle event;
         bool pending;
-        bool read;
         string buffer;
+    };
+
+    struct output_pipe : public pipe
+    {
+        output_pipe(string pipe_name, scoped_handle pipe_handle, function<bool(string const&)> cb) :
+            pipe(move(pipe_name), move(pipe_handle), true)
+        {
+            callback = move(cb);
+        }
+
+        BOOL process(DWORD &count) override final
+        {
+            buffer.resize(BUFFER_SIZE);
+            return ReadFile(handle, &buffer[0], buffer.size(), &count, &overlapped);
+        }
+
+        bool update(DWORD count) override final
+        {
+            // Read completed, process the data
+            buffer.resize(count);
+            return callback(buffer);
+        }
+
+     private:
         function<bool(string const&)> callback;
 
      private:
@@ -241,6 +262,27 @@ namespace leatherman { namespace execution {
                 }
                 overlapped.hEvent = event;
             }
+        }
+    };
+
+    struct input_pipe : public pipe
+    {
+        input_pipe(string pipe_name, scoped_handle pipe_handle, string buf) :
+            pipe(move(pipe_name), move(pipe_handle), false)
+        {
+            buffer = move(buf);
+        }
+
+        BOOL process(DWORD &count) override final
+        {
+            return WriteFile(handle, buffer.c_str(), buffer.size(), &count, &overlapped);
+        }
+
+        bool update(DWORD count) override final
+        {
+            // Register written data
+            buffer.erase(0, count);
+            return true;
         }
     };
 
@@ -264,16 +306,8 @@ namespace leatherman { namespace execution {
                         throw timeout_exception((boost::format("command timed out after %1% seconds.") % timeout).str(), static_cast<size_t>(child));
                     }
 
-                    if (pipe.read) {
-                        // Read the data
-                        pipe.buffer.resize(4096);
-                    }
-
                     DWORD count = 0;
-                    auto success = pipe.read ?
-                        ReadFile(pipe.handle, &pipe.buffer[0], pipe.buffer.size(), &count, &pipe.overlapped) :
-                        WriteFile(pipe.handle, pipe.buffer.c_str(), pipe.buffer.size(), &count, &pipe.overlapped);
-                    if (!success) {
+                    if (!pipe.process(count)) {
                         // Treat broken pipes as closed pipes
                         if (GetLastError() == ERROR_BROKEN_PIPE) {
                             pipe.handle = {};
@@ -294,16 +328,9 @@ namespace leatherman { namespace execution {
                         break;
                     }
 
-                    if (pipe.read) {
-                        // Read completed immediately, process the data
-                        pipe.buffer.resize(count);
-                        if (!pipe.callback(pipe.buffer)) {
-                            // Callback signaled that we're done
-                            return;
-                        }
-                    } else {
-                        // Register written data
-                        pipe.buffer.erase(0, count);
+                    if (!pipe.update(count)) {
+                        // Callback signaled that we're done
+                        return;
                     }
                 }
             }
@@ -364,16 +391,9 @@ namespace leatherman { namespace execution {
                     break;
                 }
 
-                if (pipe.read) {
-                    // Read completed, process the data
-                    pipe.buffer.resize(count);
-                    if (!pipe.callback(pipe.buffer)) {
-                        // Callback signaled that we're done
-                        return;
-                    }
-                } else {
-                    // Register written data
-                    pipe.buffer.erase(0, count);
+                if (!pipe.update(count)) {
+                    // Callback signaled that we're done
+                    return;
                 }
                 break;
             }
@@ -596,9 +616,9 @@ namespace leatherman { namespace execution {
         tie(output, error) = process_streams(options[execution_options::trim_output], stdout_callback, stderr_callback, [&](function<bool(string const&)> const& process_stdout, function<bool(string const&)> const& process_stderr) {
             // Read the child output
             array<pipe, 3> pipes = { {
-                input ? pipe("stdin", move(stdInWr), *input) : pipe("stdin", {}, ""),
-                pipe("stdout", move(stdOutRd), process_stdout),
-                pipe("stderr", move(stdErrRd), process_stderr)
+                input ? input_pipe("stdin", move(stdInWr), *input) : input_pipe("stdin", {}, ""),
+                output_pipe("stdout", move(stdOutRd), process_stdout),
+                output_pipe("stderr", move(stdErrRd), process_stderr)
             } };
 
             rw_from_child(procInfo.dwProcessId, pipes, timeout, timer);
