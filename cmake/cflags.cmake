@@ -78,6 +78,11 @@ if (WIN32)
     set(LEATHERMAN_DEFINITIONS -DUNICODE -D_UNICODE -DSECURITY_WIN32)
 endif()
 
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    # Use 64-bit interface for file operations on 32-bit platforms to support large files transparently.
+    list(APPEND LEATHERMAN_DEFINITIONS -D_FILE_OFFSET_BITS=64)
+endif()
+
 # Enforce UTF-8 in Leatherman.Logging; disable deprecated names in Boost.System to avoid warnings on Windows.
 list(APPEND LEATHERMAN_DEFINITIONS -DBOOST_LOG_WITHOUT_WCHAR_T -DBOOST_SYSTEM_NO_DEPRECATED)
 
