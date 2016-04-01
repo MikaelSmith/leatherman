@@ -18,6 +18,7 @@ namespace leatherman { namespace dynamic_library {
     {
         dynamic_library library;
 
+#if 0
         // Check to see if the library is loaded. Walk the list of loaded modules and match against pattern.
         // See http://msdn.microsoft.com/en-us/library/windows/desktop/ms686849(v=vs.85).aspx for details on
         // the Tool Help library.
@@ -54,6 +55,7 @@ namespace leatherman { namespace dynamic_library {
                 LOG_TRACE("library %1% didn't match pattern %2%", libname, pattern);
             }
         } while (Module32Next(hModSnap, &me32));
+#endif
 
         LOG_DEBUG("no loaded libraries found matching pattern {1}", pattern);
         return library;
