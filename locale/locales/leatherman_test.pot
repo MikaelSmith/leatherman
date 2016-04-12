@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Puppet Labs <docs@puppetlabs.com>
-# This file is distributed under the same license as the leatherman_test package.
+# Copyright (C) YEAR Puppet Labs \<docs@puppetlabs.com\>
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy

@@ -1,12 +1,12 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Puppet Labs <docs@puppetlabs.com>
-# This file is distributed under the same license as the leatherman package.
+# Copyright (C) YEAR Puppet Labs \<docs@puppetlabs.com\>
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: leatherman 0.4.1\n"
+"Project-Id-Version: leatherman 0.4.2\n"
 "Report-Msgid-Bugs-To: docs@puppetlabs.com\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -39,56 +39,56 @@ msgstr ""
 
 #. debug
 #: dynamic_library/src/posix/dynamic_library.cc:71
-#: dynamic_library/src/windows/dynamic_library.cc:105
+#: dynamic_library/src/windows/dynamic_library.cc:107
 msgid "library {1} is not loaded when attempting to load symbol {2}."
 msgstr ""
 
 #. debug
 #: dynamic_library/src/posix/dynamic_library.cc:77
-#: dynamic_library/src/windows/dynamic_library.cc:111
+#: dynamic_library/src/windows/dynamic_library.cc:113
 msgid "symbol {1} not found in library {2}, trying alias {3}."
 msgstr ""
 
 #: dynamic_library/src/posix/dynamic_library.cc:82
-#: dynamic_library/src/windows/dynamic_library.cc:116
+#: dynamic_library/src/windows/dynamic_library.cc:118
 msgid "symbol {1} was not found in {2}."
 msgstr ""
 
 #. debug
 #: dynamic_library/src/posix/dynamic_library.cc:84
-#: dynamic_library/src/windows/dynamic_library.cc:118
+#: dynamic_library/src/windows/dynamic_library.cc:120
 msgid "symbol {1} not found in library {2}."
 msgstr ""
 
 #. debug
-#: dynamic_library/src/windows/dynamic_library.cc:26
+#: dynamic_library/src/windows/dynamic_library.cc:27
 msgid ""
 "library matching pattern {1} not found, CreateToolhelp32Snapshot failed: {2}."
 msgstr ""
 
 #. debug
-#: dynamic_library/src/windows/dynamic_library.cc:34
+#: dynamic_library/src/windows/dynamic_library.cc:35
 msgid "library matching pattern {1} not found, Module32First failed: {2}."
 msgstr ""
 
 #. debug
-#: dynamic_library/src/windows/dynamic_library.cc:48
+#: dynamic_library/src/windows/dynamic_library.cc:49
 msgid "library {1} found from pattern {2}"
 msgstr ""
 
 #. debug
-#: dynamic_library/src/windows/dynamic_library.cc:50
+#: dynamic_library/src/windows/dynamic_library.cc:51
 msgid ""
 "library {1} found from pattern {2}, but unloaded before handle was acquired"
 msgstr ""
 
 #. debug
-#: dynamic_library/src/windows/dynamic_library.cc:58
+#: dynamic_library/src/windows/dynamic_library.cc:60
 msgid "no loaded libraries found matching pattern {1}"
 msgstr ""
 
 #. debug
-#: dynamic_library/src/windows/dynamic_library.cc:79
+#: dynamic_library/src/windows/dynamic_library.cc:81
 msgid "library {1} not found {2}."
 msgstr ""
 
@@ -131,7 +131,7 @@ msgstr ""
 #: execution/src/posix/execution.cc:269
 #: execution/src/windows/execution.cc:277
 #: execution/src/windows/execution.cc:352
-#: execution/src/windows/execution.cc:633
+#: execution/src/windows/execution.cc:645
 msgid "command timed out after {1} seconds."
 msgstr ""
 
@@ -199,47 +199,47 @@ msgid "child environment {1}={2}"
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:547
+#: execution/src/windows/execution.cc:558
 msgid "failed to create process: {1}."
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:568
+#: execution/src/windows/execution.cc:580
 msgid "failed to create job object: {1}."
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:571
+#: execution/src/windows/execution.cc:583
 msgid "failed to associate process with job object: {1}."
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:582
+#: execution/src/windows/execution.cc:594
 msgid "failed to terminate process: {1}."
 msgstr ""
 
 #. warning
-#: execution/src/windows/execution.cc:585
+#: execution/src/windows/execution.cc:597
 msgid "could not terminate process {1} because a job object could not be used."
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:595
+#: execution/src/windows/execution.cc:607
 msgid "failed to create waitable timer: {1}."
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:604
+#: execution/src/windows/execution.cc:616
 msgid "failed to set waitable timer: {1}."
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:635
+#: execution/src/windows/execution.cc:647
 msgid "failed to wait for child process to terminate: {1}."
 msgstr ""
 
 #. debug
-#: execution/src/windows/execution.cc:645
+#: execution/src/windows/execution.cc:657
 msgid "process exited with exit code {1}."
 msgstr ""
 
@@ -359,7 +359,7 @@ msgstr ""
 
 #. LOCALE: format a pointer as hex for printing an error message.
 #: windows/src/wmi.cc:27
-msgid "{1} (0x{2,num=hex})"
+msgid "{1} (0x{2})"
 msgstr ""
 
 #. debug
@@ -372,58 +372,66 @@ msgstr ""
 msgid "using prior COM concurrency model"
 msgstr ""
 
+#. debug
 #: windows/src/wmi.cc:42
+#: windows/src/wmi.cc:43
 msgid "failed to initialize COM library"
 msgstr ""
 
-#: windows/src/wmi.cc:52
+#. debug
+#: windows/src/wmi.cc:53
+#: windows/src/wmi.cc:54
 msgid "failed to create IWbemLocator object"
 msgstr ""
 
-#: windows/src/wmi.cc:60
+#. debug
+#: windows/src/wmi.cc:62
+#: windows/src/wmi.cc:63
 msgid "could not connect to WMI server"
 msgstr ""
 
-#: windows/src/wmi.cc:68
+#. debug
+#: windows/src/wmi.cc:71
+#: windows/src/wmi.cc:72
 msgid "could not set proxy blanket"
 msgstr ""
 
 #. debug
-#: windows/src/wmi.cc:79
+#: windows/src/wmi.cc:83
 msgid "ignoring {1}-dimensional array in query {2}.{3}"
 msgstr ""
 
 #. debug
-#: windows/src/wmi.cc:95
+#: windows/src/wmi.cc:99
 msgid ""
 "WMI query {1}.{2} result could not be converted from type {3} to a string"
 msgstr ""
 
 #. debug
-#: windows/src/wmi.cc:113
+#: windows/src/wmi.cc:117
 msgid "query {1} failed"
 msgstr ""
 
 #. debug
-#: windows/src/wmi.cc:136
+#: windows/src/wmi.cc:140
 msgid "query {1}.{2} could not be found"
 msgstr ""
 
 #. debug
-#: windows/src/wmi.cc:159
+#: windows/src/wmi.cc:163
 msgid "only single value requested from array for key {1}"
 msgstr ""
 
 #. debug
-#: windows/src/wmi.cc:174
-#: windows/src/wmi.cc:186
+#: windows/src/wmi.cc:178
+#: windows/src/wmi.cc:190
 msgid "only single entry requested from array of entries for key {1}"
 msgstr ""
 
-#: windows/src/wmi.cc:178
+#: windows/src/wmi.cc:182
 msgid "unable to get from empty array of objects"
 msgstr ""
 
-#: windows/src/wmi.cc:190
+#: windows/src/wmi.cc:194
 msgid "unable to get_range from empty array of objects"
 msgstr ""

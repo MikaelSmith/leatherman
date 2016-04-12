@@ -5,6 +5,7 @@
 #include <rapidjson/writer.h>
 #include <rapidjson/allocators.h>
 #include <rapidjson/rapidjson.h>
+#include <string>
 
 namespace leatherman { namespace json_container {
 

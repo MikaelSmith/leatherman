@@ -1,5 +1,7 @@
 find_package(Boost 1.54 REQUIRED COMPONENTS log log_setup thread date_time filesystem system chrono regex)
-find_package(Threads)
+if (NOT WIN32)
+    find_package(Threads)
+endif()
 
 add_leatherman_deps(${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 add_leatherman_includes("${Boost_INCLUDE_DIRS}")

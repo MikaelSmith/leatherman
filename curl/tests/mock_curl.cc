@@ -100,6 +100,7 @@ CURLcode curl_easy_setopt(CURL *handle, CURLoption option, ...)
     auto h = static_cast<curl_impl*>(handle);
     va_list vl;
     va_start(vl, option);
+	using callback_t = size_t(*)(char*, size_t, size_t, void*);
 
     switch (option) {
         case CURLOPT_HEADERFUNCTION:
@@ -108,7 +109,7 @@ CURLcode curl_easy_setopt(CURL *handle, CURLoption option, ...)
                 va_end(vl);
                 return CURLE_UNKNOWN_OPTION;
             }
-            h->write_header = va_arg(vl, size_t (*)(char*, size_t, size_t, void*));
+            h->write_header = va_arg(vl, callback_t);
             break;
         case CURLOPT_HEADERDATA:
             // Pointer to the context to write the header part of the received data to.
@@ -124,7 +125,7 @@ CURLcode curl_easy_setopt(CURL *handle, CURLoption option, ...)
                 va_end(vl);
                 return CURLE_COULDNT_CONNECT;
             }
-            h->write_body = va_arg(vl, size_t (*)(char*, size_t, size_t, void*));
+            h->write_body = va_arg(vl, callback_t);
             break;
         case CURLOPT_WRITEDATA:
             // Pointer to the context to write the body part of the received data to.
@@ -140,7 +141,7 @@ CURLcode curl_easy_setopt(CURL *handle, CURLoption option, ...)
                 va_end(vl);
                 return CURLE_COULDNT_CONNECT;
             }
-            h->read_function = va_arg(vl, size_t (*)(char*, size_t, size_t, void*));
+            h->read_function = va_arg(vl, callback_t);
             break;
         case CURLOPT_READDATA:
             // Pointer to the context to read the request body from by the READFUNCTION callback.

@@ -1,7 +1,6 @@
 #include <catch.hpp>
 #include <leatherman/util/environment.hpp>
 #include <leatherman/windows/windows.hpp>
-#include <unistd.h>
 
 using namespace std;
 using namespace leatherman::util;

@@ -122,7 +122,7 @@ namespace leatherman { namespace util {
 
      private:
         void* operator new(size_t) = delete;
-        void operator delete(void*) = delete;
+        //void operator delete(void*) = delete;
         void* operator new[](size_t) = delete;
         void operator delete[](void* ptr) = delete;
     };

@@ -239,7 +239,7 @@ namespace leatherman { namespace curl {
     {
         ostringstream cookies;
         ctx.req.each_cookie([&](string const& name, string const& value) {
-            if (cookies.tellp() != 0) {
+            if (cookies.tellp() != static_cast<streampos>(0)) {
                 cookies << "; ";
             }
             cookies << name << "=" << value;

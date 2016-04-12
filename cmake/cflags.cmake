@@ -1,8 +1,10 @@
 # Set compiler-specific flags
 # Each of our project dirs sets CMAKE_CXX_FLAGS based on these. We do
 # not set CMAKE_CXX_FLAGS globally because gtest is not warning-clean.
+set(CMAKE_CXX_STANDARD 11)
+
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "\\w*Clang")
-    set(LEATHERMAN_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Werror -Wno-unused-parameter -Wno-tautological-constant-out-of-range-compare")
+    set(LEATHERMAN_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror -Wno-unused-parameter -Wno-tautological-constant-out-of-range-compare")
 
     # Clang warns that 'register' is deprecated; 'register' is used throughout boost, so it can't be an error yet.
     # The warning flag is different on different clang versions so we need to extract the clang version.
@@ -41,7 +43,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-maybe-uninitialized")
 
     # missing-field-initializers is disabled because GCC can't make up their mind how to treat C++11 initializers
-    set(LEATHERMAN_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror -Wno-unused-parameter -Wno-unused-local-typedefs -Wno-unknown-pragmas -Wno-missing-field-initializers")
+    set(LEATHERMAN_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wno-unused-parameter -Wno-unused-local-typedefs -Wno-unknown-pragmas -Wno-missing-field-initializers")
     if (NOT "${CMAKE_SYSTEM_NAME}" MATCHES "SunOS")
         set(LEATHERMAN_CXX_FLAGS "${LEATHERMAN_CXX_FLAGS} -Wextra")
     endif()
@@ -70,12 +72,14 @@ if (WIN32)
     # See http://msdn.microsoft.com/en-us/library/windows/desktop/aa383745(v=vs.85).aspx for version strings.
     # When Server 2003 support is discontinued, the networking facts implementation can be cleaned up, and
     # we can statically link symbols that are currently being looked up at runtime.
-    add_definitions(-DWINVER=0x0600 -D_WIN32_WINNT=0x0600)
+    list(APPEND LEATHERMAN_DEFINITIONS -DWINVER=0x0600 -D_WIN32_WINNT=0x0600)
 
     # The GetUserNameEx function requires the application have a defined security level.
     # We define security sufficient to get the current user's info.
     # Also force use of UNICODE APIs, following the pattern outlined at http://utf8everywhere.org/.
-    set(LEATHERMAN_DEFINITIONS -DUNICODE -D_UNICODE -DSECURITY_WIN32)
+    list(APPEND LEATHERMAN_DEFINITIONS -DUNICODE -D_UNICODE -DSECURITY_WIN32)
+
+    list(APPEND LEATHERMAN_DEFINITIONS -DBOOST_NOWIDE_NO_LIB)
 endif()
 
 # Enforce UTF-8 in Leatherman.Logging; disable deprecated names in Boost.System to avoid warnings on Windows.

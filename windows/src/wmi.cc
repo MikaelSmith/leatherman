@@ -24,7 +24,7 @@ namespace leatherman { namespace windows {
     static string format_hresult(std::string s, HRESULT hres)
     {
         // LOCALE: format a pointer as hex for printing an error message.
-        return lth_locale::format("{1} (0x{2,num=hex})", s, hres);
+        return lth_locale::format("{1} (0x{2})", s, hres);
     }
 
     // GUID taken from a Windows installation and unaccepted change to MinGW-w64. The MinGW-w64 library
