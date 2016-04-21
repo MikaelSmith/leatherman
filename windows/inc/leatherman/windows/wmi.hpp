@@ -14,6 +14,8 @@
 // Forward declarations
 class IWbemLocator;
 class IWbemServices;
+class MI_Application;
+class MI_Session;
 
 namespace leatherman { namespace windows {
 
@@ -30,7 +32,7 @@ namespace leatherman { namespace windows {
     };
 
     /**
-     * A class for initiating a WMI connection over COM and querying it.
+     * A class for initiating a WMI connection and querying it.
      */
     struct wmi {
         /**
@@ -124,9 +126,9 @@ namespace leatherman { namespace windows {
         using kv_range = boost::iterator_range<imap::const_iterator>;
 
         /**
-         * Initializes a COM connection for WMI queries. Throws a wmi_exception on failure.
+         * Ensure destruction is handled correctly.
          */
-        wmi();
+        virtual ~wmi();
 
         /**
          * This is a utility for querying WMI classes. Windows queries are case-insensitive,
@@ -140,7 +142,12 @@ namespace leatherman { namespace windows {
          * @param extra Extra arguments to the WMI query, such as filters
          * @return A vector of case-insensitive maps of the keys argument and their corresponding values
          */
-        imaps query(std::string const& group, std::vector<std::string> const& keys, std::string const& extra = "") const;
+        virtual imaps query(std::string const& group, std::vector<std::string> const& keys, std::string const& extra = "") const = 0;
+
+        /**
+         * Initializes a connection for WMI queries. Throws a wmi_exception on failure.
+         */
+        static std::unique_ptr<wmi> get_wmi();
 
         /**
          * A utility for retrieving a single entry from an imap. It should only be used if
@@ -178,11 +185,55 @@ namespace leatherman { namespace windows {
          * @return An iterator range of key-value pairs matching the specified key.
          */
         static kv_range get_range(imaps const& kvmaps, std::string const& key);
+    };
+
+    /**
+     * Initiates a WMI connection over COM and satisfies the query interface.
+     */
+    struct wmi_com : public wmi {
+        /**
+         * Initiates the COM connection.
+         */
+        wmi_com();
+        
+        /**
+         * Shuts down the COM connection.
+         */
+        ~wmi_com() override;
+        
+        /**
+         * Queries COM as specified in the parent class.
+         */
+        imaps query(std::string const& group, std::vector<std::string> const& keys, std::string const& extra = "") const override;
 
      private:
         util::scoped_resource<bool> _coInit;
         util::scoped_resource<IWbemLocator *> _pLoc;
         util::scoped_resource<IWbemServices *> _pSvc;
+    };
+
+    /**
+     * Initiates a WMI connection using the new MI interface and satisfies the query interface.
+     */
+    struct wmi_mi : public wmi {
+        /**
+         * Initiates the MI application.
+         */
+        wmi_mi();
+        
+        /**
+         * Shuts down the MI application.
+         */
+        ~wmi_mi() override;
+        
+        /**
+         * Queries MI as specified in the parent class.
+         */
+        imaps query(std::string const& group, std::vector<std::string> const& keys, std::string const& extra = "") const override;
+
+     private:
+        util::scoped_resource<MI_Application *> _miApp;
+        util::scoped_resource<MI_Session *> _miSess;
     };
 
 }}  // namespace leatherman::windows

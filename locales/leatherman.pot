@@ -1,12 +1,12 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Puppet Labs <docs@puppetlabs.com>
-# This file is distributed under the same license as the leatherman package.
+# Copyright (C) YEAR Puppet Labs \<docs@puppetlabs.com\>
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: leatherman 0.4.1\n"
+"Project-Id-Version: leatherman 0.4.2\n"
 "Report-Msgid-Bugs-To: docs@puppetlabs.com\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -131,7 +131,7 @@ msgstr ""
 #: execution/src/posix/execution.cc:269
 #: execution/src/windows/execution.cc:277
 #: execution/src/windows/execution.cc:352
-#: execution/src/windows/execution.cc:633
+#: execution/src/windows/execution.cc:645
 msgid "command timed out after {1} seconds."
 msgstr ""
 
@@ -199,47 +199,47 @@ msgid "child environment {1}={2}"
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:547
+#: execution/src/windows/execution.cc:558
 msgid "failed to create process: {1}."
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:568
+#: execution/src/windows/execution.cc:580
 msgid "failed to create job object: {1}."
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:571
+#: execution/src/windows/execution.cc:583
 msgid "failed to associate process with job object: {1}."
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:582
+#: execution/src/windows/execution.cc:594
 msgid "failed to terminate process: {1}."
 msgstr ""
 
 #. warning
-#: execution/src/windows/execution.cc:585
+#: execution/src/windows/execution.cc:597
 msgid "could not terminate process {1} because a job object could not be used."
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:595
+#: execution/src/windows/execution.cc:607
 msgid "failed to create waitable timer: {1}."
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:604
+#: execution/src/windows/execution.cc:616
 msgid "failed to set waitable timer: {1}."
 msgstr ""
 
 #. error
-#: execution/src/windows/execution.cc:635
+#: execution/src/windows/execution.cc:647
 msgid "failed to wait for child process to terminate: {1}."
 msgstr ""
 
 #. debug
-#: execution/src/windows/execution.cc:645
+#: execution/src/windows/execution.cc:657
 msgid "process exited with exit code {1}."
 msgstr ""
 
@@ -357,73 +357,76 @@ msgstr ""
 msgid "GetUserProfileDirectoryW call failed: {1}"
 msgstr ""
 
-#. LOCALE: format a pointer as hex for printing an error message.
-#: windows/src/wmi.cc:27
-msgid "{1} (0x{2,num=hex})"
+#. debug
+#: windows/src/wmi.cc:31
+msgid "only single value requested from array for key {1}"
 msgstr ""
 
 #. debug
-#: windows/src/wmi.cc:36
+#: windows/src/wmi.cc:46
+#: windows/src/wmi.cc:58
+msgid "only single entry requested from array of entries for key {1}"
+msgstr ""
+
+#: windows/src/wmi.cc:50
+msgid "unable to get from empty array of objects"
+msgstr ""
+
+#: windows/src/wmi.cc:62
+msgid "unable to get_range from empty array of objects"
+msgstr ""
+
+#: windows/src/wmi_com.cc:21
+msgid "{1} (0x{2,num=hex})"
+msgstr ""
+
+#: windows/src/wmi_com.cc:23
+msgid "%1% (0x%2$#x)"
+msgstr ""
+
+#. debug
+#: windows/src/wmi_com.cc:33
 msgid "initializing WMI"
 msgstr ""
 
 #. debug
-#: windows/src/wmi.cc:40
+#: windows/src/wmi_com.cc:37
 msgid "using prior COM concurrency model"
 msgstr ""
 
-#: windows/src/wmi.cc:42
+#: windows/src/wmi_com.cc:39
 msgid "failed to initialize COM library"
 msgstr ""
 
-#: windows/src/wmi.cc:52
+#: windows/src/wmi_com.cc:49
 msgid "failed to create IWbemLocator object"
 msgstr ""
 
-#: windows/src/wmi.cc:60
+#: windows/src/wmi_com.cc:57
 msgid "could not connect to WMI server"
 msgstr ""
 
-#: windows/src/wmi.cc:68
+#: windows/src/wmi_com.cc:65
 msgid "could not set proxy blanket"
 msgstr ""
 
 #. debug
-#: windows/src/wmi.cc:79
+#: windows/src/wmi_com.cc:80
 msgid "ignoring {1}-dimensional array in query {2}.{3}"
 msgstr ""
 
 #. debug
-#: windows/src/wmi.cc:95
+#: windows/src/wmi_com.cc:96
 msgid ""
 "WMI query {1}.{2} result could not be converted from type {3} to a string"
 msgstr ""
 
 #. debug
-#: windows/src/wmi.cc:113
+#: windows/src/wmi_com.cc:114
 msgid "query {1} failed"
 msgstr ""
 
 #. debug
-#: windows/src/wmi.cc:136
+#: windows/src/wmi_com.cc:137
 msgid "query {1}.{2} could not be found"
-msgstr ""
-
-#. debug
-#: windows/src/wmi.cc:159
-msgid "only single value requested from array for key {1}"
-msgstr ""
-
-#. debug
-#: windows/src/wmi.cc:174
-#: windows/src/wmi.cc:186
-msgid "only single entry requested from array of entries for key {1}"
-msgstr ""
-
-#: windows/src/wmi.cc:178
-msgid "unable to get from empty array of objects"
-msgstr ""
-
-#: windows/src/wmi.cc:190
-msgid "unable to get_range from empty array of objects"
 msgstr ""

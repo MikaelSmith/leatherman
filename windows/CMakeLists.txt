@@ -17,6 +17,8 @@ set(WINDOWS_UTIL_SOURCES
   "src/process.cc"
   "src/user.cc"
   "src/wmi.cc"
+  "src/wmi_com.cc"
+  "src/wmi_mi.cc"
   "src/system_error.cc"
 )
 
