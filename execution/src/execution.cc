@@ -1,6 +1,7 @@
 #include <leatherman/execution/execution.hpp>
 #include <leatherman/logging/logging.hpp>
 #include <leatherman/locale/locale.hpp>
+#include <leatherman/util/scoped_umask.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/nowide/fstream.hpp>
@@ -253,11 +254,29 @@ namespace leatherman { namespace execution {
         uint32_t timeout,
         lth_util::option_set<execution_options> const& options)
     {
+        return execute(file, arguments, input, out_file, err_file, environment, pid_callback, timeout, 000, options);
+    }
+
+    result execute(
+        std::string const& file,
+        std::vector<std::string> const& arguments,
+        std::string const& input,
+        std::string const& out_file,
+        std::string const& err_file,
+        std::map<std::string, std::string> const& environment,
+        std::function<void(size_t)> pid_callback,
+        uint32_t timeout,
+        uint16_t mask,
+        lth_util::option_set<execution_options> const& options)
+    {
         auto actual_options = options;
         function<bool(string&)> stderr_callback;
         function<bool(string&)> stdout_callback;
         boost::nowide::ofstream out_stream;
         boost::nowide::ofstream err_stream;
+
+        // Restrict permissions of output files based on the mask.
+        scoped_umask unmasker(mask);
 
         out_stream.open(out_file.c_str(), std::ios::binary);
         if (!out_stream.is_open()) {
@@ -277,6 +296,9 @@ namespace leatherman { namespace execution {
                 return true;
             });
         }
+
+        // Reset now that we've created out and err files.
+        unmasker.release();
 
         stdout_callback = ([&](string& line) {
             out_stream << line << "\n";
