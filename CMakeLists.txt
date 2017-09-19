@@ -56,6 +56,8 @@ else()
     add_definitions(-DLEATHERMAN_LOCALE_INSTALL="${CMAKE_INSTALL_PREFIX}/share/locale")
 endif()
 
+enable_clang_tidy()
+
 file(GLOB_RECURSE ALL_LEATHERMAN_SOURCES */src/*.cc */inc/*.hpp)
 add_subdirectory(locales)
 

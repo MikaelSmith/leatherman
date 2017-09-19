@@ -115,6 +115,28 @@ macro(enable_cppcheck)
     add_custom_target(cppcheck COMMAND cppcheck --enable=warning,performance --error-exitcode=2 --quiet --inline-suppr ${CPPCHECK_DIRS})
 endmacro()
 
+# Usage: enable_clang_tidy()
+#
+# Use before declaring targets, so that LTH_CLANG_TIDY can be used.
+# Example:
+#  if (LTH_CLANG_TIDY)
+#   set_target_properties(${libname} PROPERTIES CXX_CLANG_TIDY "${LTH_CLANG_TIDY}")
+#  endif()
+macro(enable_clang_tidy)
+    find_program(
+        CLANG_TIDY_EXE
+        NAMES "clang-tidy"
+        DOC "Path to clang-tidy executable")
+
+    if(NOT CLANG_TIDY_EXE)
+        message(STATUS "clang-tidy not found.")
+    else()
+        message(STATUS "clang-tidy found: ${CLANG_TIDY_EXE}")
+        # TODO: add cppcoreguidelines-, performance-, readability-, bugprone-, misc-, and maybe a coding standard.
+        set(LTH_CLANG_TIDY "${CLANG_TIDY_EXE}" "-checks=boost-*,clang-analyzer-*,modernize-*,-clang-diagnostic-unused-command-line-argument")
+    endif()
+endmacro()
+
 # We set this here so that enable_cpplint() can find it
 set(LEATHERMAN_CPPLINT_PATH "${LEATHERMAN_CMAKE_DIR}/../scripts/cpplint.py")
 

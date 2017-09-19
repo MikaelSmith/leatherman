@@ -19,4 +19,7 @@ target_link_libraries(leatherman_test ${LEATHERMAN_TEST_LIBS})
 
 leatherman_logging_namespace("leatherman.test")
 set_target_properties(leatherman_test PROPERTIES COMPILE_FLAGS "${LEATHERMAN_CXX_FLAGS}")
+if (LTH_CLANG_TIDY)
+    set_target_properties(leatherman_test PROPERTIES CXX_CLANG_TIDY "${LTH_CLANG_TIDY}")
+endif()
 add_test(NAME "leatherman\\ tests" COMMAND leatherman_test)
