@@ -13,7 +13,7 @@
 #include <sys/wait.h>
 #include <sys/time.h>
 #include <fcntl.h>
-#include <signal.h>
+#include <csignal>
 
 #include "platform.hpp"
 

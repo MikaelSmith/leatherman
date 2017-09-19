@@ -16,7 +16,7 @@ namespace leatherman { namespace util {
         /**
          * Constructs a scope_exit.
          */
-        scope_exit();
+        scope_exit() = default;
 
         /**
          * Constructs a scope_exit.
@@ -28,14 +28,14 @@ namespace leatherman { namespace util {
          * Moves the given scope_exit into this scope_exit.
          * @param other The scope_exit to move into this scope_exit.
          */
-        scope_exit(scope_exit&& other);
+        scope_exit(scope_exit&& other) = default;
 
         /**
          * Moves the given scoped_resource into this scoped_resource.
          * @param other The scoped_resource to move into this scoped_resource.
          * @return Returns this scope_exit.
          */
-        scope_exit& operator=(scope_exit&& other);
+        scope_exit& operator=(scope_exit&& other) = default;
 
         /**
          * Destructs a scope_exit.
