@@ -242,7 +242,11 @@ namespace leatherman { namespace execution {
                     read(pipe.descriptor, &pipe.buffer[0], pipe.buffer.size()) :
                     write(pipe.descriptor, pipe.buffer.c_str(), pipe.buffer.size());
                 if (count < 0) {
-                    if (errno != EINTR) {
+                    if (errno == EPIPE && pipe.buffer.size() == 0) {
+                        // Nothing to write, stop trying.
+                        pipe.descriptor = {};
+                        continue;
+                    } else if (errno != EINTR) {
                         LOG_ERROR("{1} pipe i/o failed: {2}.", pipe.name, format_error());
                         throw execution_exception(_("child i/o failed."));
                     }
