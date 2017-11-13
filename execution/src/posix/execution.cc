@@ -246,7 +246,7 @@ namespace leatherman { namespace execution {
                         pipe.descriptor = {};
                         continue;
                     } else if (errno != EINTR) {
-                        throw execution_exception(_("{1} pipe i/o failed: {2}", pipe.name, format_error()));
+                        throw execution_exception(_("{1} pipe [{2} - {3}] i/o failed: {4}", pipe.name, pipe.buffer.size(), pipe.buffer, format_error()));
                     }
                     // Interrupted by signal
                     LOG_DEBUG("{1} pipe i/o was interrupted and will be retried.", pipe.name);
